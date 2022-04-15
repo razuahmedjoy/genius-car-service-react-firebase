@@ -1,0 +1,9 @@
+form {
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    border: solid 1px blue;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: -3px 5px 13px 0px #5f9cca61;
+}
