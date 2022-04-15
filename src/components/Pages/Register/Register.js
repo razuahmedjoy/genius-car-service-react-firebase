@@ -1,10 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import auth from '../../../firebase.init';
 
 const Register = () => {
-  
-    const [error,setError] = useState('')
+    const navigate = useNavigate()
+    const [error, setError] = useState('')
+    const [
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+    ] = useCreateUserWithEmailAndPassword(auth);
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -13,16 +21,22 @@ const Register = () => {
         const password1 = event.target.password1.value
         const password2 = event.target.password2.value
 
-        console.log(email,name,password1,password2)
-        // if(password.length < 6){
-        //     setError('Password should be at least 6 charecters long');
-        //     return;
-        // }
-        // if(password !== confirmPassword) {
-        //     setError('Both password and confirm password should be same');
-        //     return;
-        // }
+        console.log(email, name, password1, password2)
+        if(password1.length < 6){
+            setError('PAssword must be at least 6 characters')
+            return;
+        }
+        if(password1 !== password2){
+            setError('Both password field should be same');
+            return;
+        }
+        createUserWithEmailAndPassword(email,password1);
+        console.log("success")
 
+    }
+
+    if(user){
+        navigate('/home')
     }
 
     return (
@@ -38,7 +52,7 @@ const Register = () => {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" name="email"  placeholder="Enter email" required/>
+                    <Form.Control type="email" name="email" placeholder="Enter email" required />
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                     </Form.Text>
@@ -46,12 +60,12 @@ const Register = () => {
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control  type="password" name="password1"  placeholder="Password" required />
+                    <Form.Control type="password" name="password1" placeholder="Password" required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword2">
                     <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control type="password" name="password2"  placeholder="Again Password" required />
+                    <Form.Control type="password" name="password2" placeholder="Again Password" required />
                 </Form.Group>
                 <p className="text-danger">{error}</p>
                 <p>Already have an account? <Link className="text-decoration-none" to="/login">Login Now</Link> </p>
