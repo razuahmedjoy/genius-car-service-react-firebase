@@ -41,7 +41,7 @@ const Header = () => {
                                 Logout
                                 </Nav.Link>
                                 <Nav.Link as={Link} to="/profile">
-                                    {user?.email}
+                                    {user?.email || user?.displayName}
                                 </Nav.Link>
                                 </>
 
